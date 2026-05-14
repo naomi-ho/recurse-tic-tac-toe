@@ -62,7 +62,7 @@ function handleMove(e) {
   // update game state and cell
   placeMark(index, clickedCell, currentPlayer);
 
-  // check for win or draw
+  // check for win or draw. otherwise, switch turns.
   if (checkWin(gameState.boardArray, currentPlayer)) {
     endGame(true, currentPlayer);
   } else if (checkDraw()) {
@@ -85,7 +85,9 @@ function checkWin(board, player) {
   });
 }
 
-function checkDraw() {}
+function checkDraw() {
+  return gameState.boardArray.every((cell) => cell !== '');
+}
 
 function switchTurn() {
   gameState.currentPlayer =
