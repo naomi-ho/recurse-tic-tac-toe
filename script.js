@@ -15,15 +15,14 @@ const game = document.querySelector('.game');
 
 const gameState = {
   boardArray: [],
-  currentPlayer: 'X',
+  isPlayer_O_Turn: false,
   gameActive: true,
 };
 
 function initGameState() {
   gameState.boardArray = ['', '', '', '', '', '', '', '', ''];
-  gameState.currentPlayer = 'X';
+  gameState.isPlayer_O_Turn = false;
   gameState.gameActive = true;
-  console.log(gameState);
 }
 
 function createBoard() {
@@ -47,4 +46,30 @@ function startGame() {
 
 startGame();
 
-function handleMove() {}
+function handleMove(e) {
+  // get clicked cell index
+  const clickedCell = e.target;
+  const index = clickedCell.dataset.index;
+
+  // determine current player
+  const currentPlayer = gameState.isPlayer_O_Turn ? PLAYER_O : PLAYER_X;
+
+  // if game isn't active or cell is already filled, return
+  if (gameState.gameActive !== true || gameState.boardArray[index] !== '') {
+    return;
+  }
+
+  // update game state and cell
+  placeMark(index, clickedCell, currentPlayer);
+
+  // check for win
+
+  // check for draw
+
+  // switch current player
+}
+
+function placeMark(index, clickedCell, currentPlayer) {
+  gameState.boardArray[index] = currentPlayer;
+  clickedCell.textContent = currentPlayer;
+}
