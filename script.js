@@ -15,13 +15,13 @@ const game = document.querySelector('.game');
 
 const gameState = {
   boardArray: [],
-  isPlayer_O_Turn: false,
+  currentPlayer: 'X',
   gameActive: true,
 };
 
 function initGameState() {
   gameState.boardArray = ['', '', '', '', '', '', '', '', ''];
-  gameState.isPlayer_O_Turn = false;
+  gameState.currentPlayer = 'X';
   gameState.gameActive = true;
 }
 
@@ -52,9 +52,9 @@ function handleMove(e) {
   const index = clickedCell.dataset.index;
 
   // determine current player
-  const currentPlayer = gameState.isPlayer_O_Turn ? PLAYER_O : PLAYER_X;
+  const currentPlayer = gameState.currentPlayer;
 
-  // if game isn't active or cell is already filled, return
+  // prevents multiple moves on the same cell
   if (gameState.gameActive !== true || gameState.boardArray[index] !== '') {
     return;
   }
@@ -62,14 +62,41 @@ function handleMove(e) {
   // update game state and cell
   placeMark(index, clickedCell, currentPlayer);
 
-  // check for win
-
-  // check for draw
-
-  // switch current player
+  // check for win or draw
+  if (checkWin(gameState.boardArray, currentPlayer)) {
+    endGame(true, currentPlayer);
+  } else if (checkDraw()) {
+    endGame(false, currentPlayer);
+  } else {
+    switchTurn();
+  }
 }
 
-function placeMark(index, clickedCell, currentPlayer) {
-  gameState.boardArray[index] = currentPlayer;
-  clickedCell.textContent = currentPlayer;
+function placeMark(index, cell, player) {
+  gameState.boardArray[index] = player;
+  cell.textContent = player;
+}
+
+function checkWin(board, player) {
+  return WINNING_COMBINATIONS.some((combination) => {
+    return combination.every((index) => {
+      return board[index] === player;
+    });
+  });
+}
+
+function checkDraw() {}
+
+function switchTurn() {
+  gameState.currentPlayer =
+    gameState.currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
+}
+
+function endGame(result, player) {
+  if (!result) {
+    console.log("It's a draw!");
+  } else {
+    console.log(`Player with ${player} wins!`);
+  }
+  gameState.gameActive = false;
 }
