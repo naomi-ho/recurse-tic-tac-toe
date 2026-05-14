@@ -1,0 +1,42 @@
+:root {
+  color-scheme: dark;
+  --cell-size: 150px;
+  --green: #5ccc37;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+.game {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.board {
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(3, auto);
+  margin: auto;
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 2px solid var(--green);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+}
