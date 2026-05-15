@@ -13,6 +13,7 @@ const WINNING_COMBINATIONS = [
 
 const game = document.querySelector('.game');
 const restart = document.querySelector('#restart');
+const message = document.querySelector('#message');
 
 restart.addEventListener('click', resetGame);
 
@@ -45,6 +46,8 @@ function createBoard() {
 function startGame() {
   initGameState();
   createBoard();
+
+  message.textContent = `Player ${gameState.currentPlayer}'s Turn`;
 }
 
 startGame();
@@ -95,13 +98,14 @@ function checkDraw() {
 function switchTurn() {
   gameState.currentPlayer =
     gameState.currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
+  message.textContent = `Player ${gameState.currentPlayer}'s Turn`;
 }
 
 function endGame(result, player) {
   if (!result) {
-    console.log("It's a draw!");
+    message.textContent = "It's a draw!";
   } else {
-    console.log(`Player with ${player} wins!`);
+    message.textContent = `Player ${player} wins!`;
   }
   gameState.gameActive = false;
 }
