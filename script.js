@@ -12,6 +12,9 @@ const WINNING_COMBINATIONS = [
 ];
 
 const game = document.querySelector('.game');
+const restart = document.querySelector('#restart');
+
+restart.addEventListener('click', resetGame);
 
 const gameState = {
   boardArray: [],
@@ -101,4 +104,13 @@ function endGame(result, player) {
     console.log(`Player with ${player} wins!`);
   }
   gameState.gameActive = false;
+}
+
+function resetGame() {
+  const oldBoard = document.querySelector('.board');
+  if (oldBoard) {
+    oldBoard.remove();
+  }
+
+  startGame();
 }

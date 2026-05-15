@@ -16,6 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  gap: 40px;
 }
 
 .game {
@@ -35,16 +36,19 @@ body {
   margin: auto;
 }
 
+button {
+  border: 2px solid var(--green);
+  background-color: transparent;
+  color: var(--green);
+  cursor: pointer;
+}
+
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  border: 2px solid var(--green);
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  color: var(--green);
   font-size: 50px;
 }
 
@@ -70,4 +74,9 @@ body {
 .cell:nth-child(8),
 .cell:nth-child(9) {
   border-bottom: none;
+}
+
+#restart {
+  padding: 10px;
+  border-radius: 5px;
 }
