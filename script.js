@@ -103,7 +103,7 @@ function switchTurn() {
 
 function endGame(result, player) {
   if (!result) {
-    message.textContent = "It's a draw!";
+    message.textContent = 'Nobody wins. Try again!';
   } else {
     message.textContent = `Player ${player} wins!`;
   }
