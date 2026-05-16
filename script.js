@@ -108,6 +108,7 @@ function endGame(result, player) {
     message.textContent = `Player ${player} wins!`;
   }
   gameState.gameActive = false;
+  message.className = 'flashing-text';
 }
 
 function resetGame() {
@@ -116,5 +117,6 @@ function resetGame() {
     oldBoard.remove();
   }
 
+  message.classList.remove('flashing-text');
   startGame();
 }
