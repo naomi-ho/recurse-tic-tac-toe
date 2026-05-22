@@ -1,3 +1,4 @@
+// 1. CONSTANTS
 const PLAYER_X = 'X';
 const PLAYER_O = 'O';
 const WINNING_COMBINATIONS = [
@@ -11,18 +12,19 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 
+// 2. DOM SELECTIONS
 const game = document.querySelector('.game');
 const restart = document.querySelector('#restart');
 const message = document.querySelector('#message');
 
-restart.addEventListener('click', resetGame);
-
+// 3. STATE
 const gameState = {
   boardArray: [],
   currentPlayer: 'X',
   gameActive: true,
 };
 
+// 4. SETUP & RESET FUNCTIONS
 function initGameState() {
   gameState.boardArray = ['', '', '', '', '', '', '', '', ''];
   gameState.currentPlayer = 'X';
@@ -43,15 +45,51 @@ function createBoard() {
   game.appendChild(board);
 }
 
-function startGame() {
-  initGameState();
-  createBoard();
+function resetGame() {
+  const oldBoard = document.querySelector('.board');
+  if (oldBoard) {
+    oldBoard.remove();
+  }
 
+  startGame();
+}
+
+// 5. PURE GAME LOGIC FUNCTIONS (no side effects on DOM)
+function checkWin(board, player) {
+  return WINNING_COMBINATIONS.some((combination) => {
+    return combination.every((index) => {
+      return board[index] === player;
+    });
+  });
+}
+
+function checkDraw() {
+  return gameState.boardArray.every((cell) => cell !== '');
+}
+
+// 6. UI UPDATE FUNCTIONS (modify DOM based on game state)
+function placeMark(index, cell, player) {
+  gameState.boardArray[index] = player;
+  cell.textContent = player;
+}
+
+function switchTurn() {
+  gameState.currentPlayer =
+    gameState.currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
   message.textContent = `Player ${gameState.currentPlayer}'s Turn`;
 }
 
-startGame();
+function endGame(isWin, player) {
+  if (isWin) {
+    message.textContent = `Player ${player} wins!`;
+  } else {
+    message.textContent = 'Nobody wins. Try again!';
+  }
+  gameState.gameActive = false;
+  message.className = 'flashing-text';
+}
 
+// 7. CORE EVENT HANDLER
 function handleMove(e) {
   // get clicked cell index
   const clickedCell = e.target;
@@ -78,45 +116,17 @@ function handleMove(e) {
   }
 }
 
-function placeMark(index, cell, player) {
-  gameState.boardArray[index] = player;
-  cell.textContent = player;
-}
+// 8. ORCHESTRATION
+function startGame() {
+  initGameState();
+  createBoard();
 
-function checkWin(board, player) {
-  return WINNING_COMBINATIONS.some((combination) => {
-    return combination.every((index) => {
-      return board[index] === player;
-    });
-  });
-}
-
-function checkDraw() {
-  return gameState.boardArray.every((cell) => cell !== '');
-}
-
-function switchTurn() {
-  gameState.currentPlayer =
-    gameState.currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
+  message.classList.remove('flashing-text');
   message.textContent = `Player ${gameState.currentPlayer}'s Turn`;
 }
 
-function endGame(result, player) {
-  if (!result) {
-    message.textContent = 'Nobody wins. Try again!';
-  } else {
-    message.textContent = `Player ${player} wins!`;
-  }
-  gameState.gameActive = false;
-  message.className = 'flashing-text';
-}
+// 9. EVENT LISTENERS
+restart.addEventListener('click', resetGame);
 
-function resetGame() {
-  const oldBoard = document.querySelector('.board');
-  if (oldBoard) {
-    oldBoard.remove();
-  }
-
-  message.classList.remove('flashing-text');
-  startGame();
-}
+// 10. START THE GAME
+startGame();
